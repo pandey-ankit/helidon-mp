@@ -2,33 +2,28 @@
 
 ## About this Workshop
 
-This lab offers attendees an intro-level, hands-on session with Helidon and Verrazzano. You will learn how to make and assemble services and deploy them on an enterprise container platform.
+During this lab, you will use Helidon Project Starter to develop the HTTP microservice application.  It’s highly customizable, providing various options that allow users to select Helidon features they want to add to the project.
 
-This is a BYOL (Bring Your Laptop) session, so bring your Windows, OSX, or Linux laptop. You will need JDK 11+, Apache Maven (3.6), and Docker installed before you begin.
+Then you will explore the OCI Code Editor and open the Helidon application in it. You will also learn, how to use GraalVM Enterprise Edition in Oracle Cloud Infrastructure(OCI) Cloud Shell.
 
-During this lab, you will install Helidon CLI tools and develop the HTTP microservice application. For Verrazzano, you will set up Oracle Kubernetes Engine (OKE) on Oracle Cloud Infrastructure using the Oracle Cloud Free Tier account. The Free Tier account is sufficient to explore and learn how to run and operate microservice applications on an enterprise level.
-
-The goal of this workshop is that you learn the basics of using Helidon and Verrazzano and understand how they can help you in your projects. If you want to learn more about the capabilities of these projects, then continue to explore using your Oracle Free Tier cloud account and Oracle Cloud Infrastructure.
+You  will build a GraalVM native image for a Helidon MP application using maven. Then you will modify the application by adding a custom endpoint in existing Java Class. Later, you will build native docker image of this application and push it to Oracle Cloud Container Image Registry. You will also create a compute instance and pull the docker image her and run the docker container for this application.
 
 This workshop is designed to be as self-explanatory as possible, but feel free to ask for clarification or assistance along the way.
-
-> Provisioning the Oracle Kubernetes Engine (OKE) and installing Verrazzano can take several minutes. To save time, you will be asked to do your development and environment setup in parallel. Follow the instructions and switch between tasks when it is required and necessary.
 
 Estimated Time: 90 minutes
 
 ### Objectives
 
-* Set up your Oracle Cloud Free Tier account (if you haven't done so already).
-* Set up an Oracle Kubernetes Engine instance on the Oracle Cloud Infrastructure.
-* Install the Verrazzano platform.
-* Deploy the *Helidon MP* application.
-* Monitor the *Helidon MP* application using Verrazzano tools, including Kibana, Grafana and Prometheus.
+* Generate an Helidon MP application
+* Explore OCI Code Editor 
+* Create an native image for Helidon MP application
+* Create GraalVM native docker image for Helidon application
+* Create an Virtual Machine
+* Run docker container for Helidon MP application
 
 ### Prerequisites
-This lab assumes you have the following installed on your machine:
-* JDK 11+
-* Apache Maven (3.6)
-* Docker
+This lab assumes you have:
+* Oracle Cloud Account
 
 
 ## About Helidon
@@ -42,25 +37,9 @@ Helidon has also added additional APIs to the core set of Microprofile APIs givi
 
 > The [MicroProfile](https://microprofile.io/) standard builds on Jakarta EE. Like Jakarta EE, MicroProfile is open source and is developed by the Eclipse Foundation. Implementation with MicroProfile takes place in the libraries or application servers implementing the standard, just like Jakarta EE.
 
-## About Verrazzano
-
-Verrazzano is an end-to-end enterprise container platform for deploying cloud-native and traditional applications in multi-cloud and hybrid environments. It is made up of a curated set of open source components – many that you may already use and trust, and some that were written specifically to pull together all of the pieces that make Verrazzano a cohesive and easy-to-use platform.
-
-Verrazzano includes the following capabilities:
-- Hybrid and multicluster workload management
-- Special handling for WebLogic, Coherence, and Helidon applications
-- Multicluster infrastructure management
-- Integrated and pre-wired application monitoring
-- Integrated security
-- DevOps and GitOps enablement
-
-![Verrazzano](images/verrazzano.png)
-
-
 ## Learn More
 
 * [https://helidon.io](https://helidon.io)
-* [https://verrazzano.io/](https://verrazzano.io/)
 
 ## Acknowledgements
 

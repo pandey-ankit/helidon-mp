@@ -1,139 +1,131 @@
-# Deploy Helidon Application on Verrazzano
+# Run Helidon Application native docker image in Compute Instance
 
 ## Introduction
 
-This lab walks you through the process of deploying the Helidon quickstart-mp application.
+This lab walks you through the process of pull a docker image from Oracle Container Image Registry and run it in Virtual Machine inside Oracle Cloud Infrastructure.
 
-Estimated Time: 10 minutes
-
-### Verrazzano and Application Deployment
-
-Verrazzano supports application definition using [Open Application Model (OAM)](https://oam.dev/). Verrazzano applications are composed of components and application configurations.
-
-When you deploy applications with Verrazzano, the platform sets up connections, and network policies, ingresses in the service mesh, and wires up a monitoring stack to capture the metrics, logs, and traces. Verrazzano employs OAM components to define the functional units of a system that are then assembled and configured by defining associated application configurations.
-
-### Verrazzano components
-
-A Verrazzano OAM component is a [Kubernetes Custom Resource](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) describing an application’s general composition and environment requirements.
-
-The following code shows a simple Helidon application component for Helidon *quickstart-mp* application used in this lab. This resource describes a component which is implemented by a single Docker image containing a Helidon application exposing a single endpoint.
-
-```yaml
-apiVersion: core.oam.dev/v1alpha2
-kind: Component
-metadata:
-  name: hello-helidon-component
-  namespace: hello-helidon
-spec:
-  workload:
-    apiVersion: oam.verrazzano.io/v1alpha1
-    kind: VerrazzanoHelidonWorkload
-    metadata:
-      name: hello-helidon-workload
-      labels:
-        app: hello-helidon
-    spec:
-      deploymentTemplate:
-        metadata:
-          name: hello-helidon-deployment
-        podSpec:
-          containers:
-            - name: hello-helidon-container
-              image: "END_POINT_OF_YOUR_REGION/NAMESPACE_OF_YOUR_TENANCY/quickstart-mp:1.0"
-              ports:
-                - containerPort: 8080
-                  name: http
-```
-
-A brief description of each field of the component:
-
-* **apiVersion** - Version of the component custom resource definition
-* **kind** - Standard name of the component custom resource definition
-* **metadata.name** - The name used to create the component’s custom resource
-* **metadata.namespace** - The namespace used to create this component’s custom resource
-* **spec.workload.kind** - VerrazzanoHelidonWorkload defines a stateless workload of Kubernetes
-* **spec.workload.spec.deploymentTemplate.podSpec.metadata.name** - The name used to create the stateless workload of Kubernetes
-* **spec.workload.spec.deploymentTemplate.podSpec.containers** - The implementation containers
-* **spec.workload.spec.deploymentTemplate.podSpec.containers.ports** - Ports exposed by the container
-
-### Verrazzano Application Configurations
-
-A Verrazzano application configuration is a Kubernetes Custom Resource which provides environment-specific customizations. The following code shows the application configuration for the Helidon *quickstart-mp* example used in this lab. This resource specifies the deployment of the application to the hello-helidon namespace.
-
-Additional runtime features are specified using traits, or runtime overlays that augment the workload. For example, the ingress trait specifies the ingress host and path, while the metrics trait provides the Prometheus scraper used to obtain the application-related metrics.
-
-```yaml
-apiVersion: core.oam.dev/v1alpha2
-kind: ApplicationConfiguration
-metadata:
-  name: hello-helidon-appconf
-  namespace: hello-helidon
-  annotations:
-    version: v1.0.0
-    description: "Hello Helidon application"
-spec:
-  components:
-    - componentName: hello-helidon-component
-      traits:
-        - trait:
-            apiVersion: oam.verrazzano.io/v1alpha1
-            kind: MetricsTrait
-            spec:
-                port: 8080
-                scraper: verrazzano-system/vmi-system-prometheus-0
-        - trait:
-            apiVersion: oam.verrazzano.io/v1alpha1
-            kind: IngressTrait
-            metadata:
-              name: hello-helidon-ingress
-            spec:
-              rules:
-                - paths:
-                    - path: "/help/allGreetings"
-                      pathType: Prefix
-```
-
-A brief description of each field in the application configuration:
-
-* **apiVersion** - Version of the ApplicationConfiguration custom resource definition
-* **kind** - Standard name of the application configuration custom resource definition
-* **metadata.name** - The name used to create this application configuration resource
-* **metadata.namespace** - The namespace used for this application configuration custom resource
-* **spec.components** - Reference to the application’s components leveraged to specify runtime configuration
-* **spec.components[].traits** - The traits specified for the application’s components
-
-To explore traits, we can examine the fields of an ingress trait:
-
-* **apiVersion** - Version of the OAM trait custom resource definition
-* **kind** - IngressTrait is the name of the OAM application ingress trait custom resource definition
-* **spec.rules.paths** - The context paths for accessing the application
-
+Estimated Time: 15 minutes
 
 
 ### Objectives
 
 In this lab, you will:
 
-* Verify the successful installation of the Verrazzano environment.
-* Deploy the Helidon *quickstart-mp* application.
-* Verify the deployment of the Helidon *quickstart-mp* application.
+* Create a compute instance
+* Install Docker in Compute instance
+* Run the application native image docker container inside compute instance.
 
 ### Prerequisites
 
 To run this lab, you must have:
 
-* Kubernetes (OKE) cluster running on the Oracle Cloud Infrastructure.
-* Verrazzano installation started on a Kubernetes (OKE) cluster.
-* Container packaged Helidon *quickstart-mp* application available in a container registry.
+* Oracle Cloud Account
+* Having resource to create compute instance
+* Container packaged Helidon *myproject-your_first_name* application available in a container registry.
 
 ## Task 1: Create Compute instance
 
+1. In Cloud console, click *Compute* -> *Instances*.
+    ![compute instances](images/compute-instance.png)
+
+2. Select the correct compartment and then click *Create instance*.
+    ![create instance](images/create-instance.png)
+
+3. Select the following values and click *Create*.</br>
+    **Name:** Leave default.</br>
+    **Image:** Leave default which is Oracle Linux 8.</br>
+    **Shape:** Leave default which is **VM.Standard.E4.Flex**.</br>
+    **Primary network:** select *Create new virtual cloud network* and leave default values.</br>
+    **Subnet:** select *Create new public subnet* and leave default values.</br>
+    **Public IP address:** select *Assign a public IPv4 address*.</br>
+    **Add SSH keys:** select *Generate a key pair for me* and click *Save private key* and *Save public key* to save the key pair in your local machine. you will need to copy private key to Code Editor later.
+
+
+4. Once instance get created, click *Copy* to copy the public ip of instance.
+    ![copy ip](images/copy-ip.png)
 
 ## Task 2: Install docker on compute instance
 
+1. In terminal inside the Code Editor, run the following command to create private key.
+    ```bash
+    <copy>vi ~/.ssh/opc.key</copy>
+    ```
+
+2. Press *i* to enter in insert mode and paste the content of private key, which you downloaded in task 1 of this lab. Press *escape* key and then enter *:wq:* to save the content of file.
+
+3. Change the permission of file by running the following command in terminal.
+    ```bash
+    <copy>chmod 600 ~/.ssh/opc.key</copy>
+    ```
+
+4. Run the following command with your own *PUBLIC IP* to connect to Compute Instance just created.
+    ```bash
+    <copy>ssh -i ~/.ssh/opc.key opc@REPLACE_THIS_WITH_YOUR_PUBLIC_IP</copy>
+    ```
+    ![ssh opc](images/ssh-opc.png)
+
+
+5. Run the following command to install docker as root user in compute instance and to provide *opc* user capability to run docker.
+    ```bash
+    <copy>sudo dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+    sudo dnf remove -y runc
+    sudo dnf install -y docker-ce --nobest
+    sudo systemctl enable docker.service
+    sudo systemctl start docker.service
+    sudo usermod -aG docker opc
+    sudo reboot</copy>
+    ```
+
+6. Wait for 1-2 minutes till the machine reboots and connect to compute instance again by running the following command:
+    ```bash
+    <copy>ssh -i ~/.ssh/opc.key opc@REPLACE_THIS_WITH_YOUR_PUBLIC_IP</copy>
+    ```
 
 ## Task 3: Pull and run Greeting app in the Compute instance
 
+
+1. Run the following command to pull the docker image from Oracle Container Image Registry.
+    ```bash
+    <copy>docker pull ENDPOINT_OF_YOUR_REGION/NAMESPACE_OF_YOUR_TENANCY/myproject-your_first_name:1.0</copy>
+    ```
+
+    you will have the similar output as shown below.
+    ![pull image](images/docker-pull.png)
+
+2. Run the following command to run the application:
+    ```bash
+    <copy>docker run --rm -p 8080:8080 ENDPOINT_OF_YOUR_REGION/NAMESPACE_OF_YOUR_TENANCY/myproject-your_first_name:1.0</copy>
+    ```
+
+3. You can open a new terminal and ssh to compute instance and run the following commands to excercise the application.
+    ```bash
+    <copy>
+    curl -X GET http://localhost:8080/greet
+    </copy>
+    {"message":"Hello World!","greeting":null}
+    ```
+
+    ```bash
+    <copy>
+    curl -X GET http://localhost:8080/greet/Joe
+    </copy>
+    {"message":"Hello Joe!","greeting":null}
+    ```
+
+    ```bash
+    <copy>
+    curl -X PUT -H "Content-Type: application/json" -d '{"greeting" : "Hola"}' http://localhost:8080/greet/greeting
+    </copy>
+    ```
+
+    ```bash
+    <copy>
+    curl -X GET http://localhost:8080/greet/Jose
+    </copy>
+    {"message":"Hola Jose!","greeting":null}
+    ```
+
+    Congratulations you have successfully completed the Helidon application deployment on Compute instance in Oracle Cloud Infrastructure.
 
 
 ## Acknowledgements

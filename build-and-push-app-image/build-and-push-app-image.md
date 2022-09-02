@@ -1,10 +1,10 @@
-# Push Helidon Application Image to Oracle Cloud Container Registry
+# Build and Push Helidon Application Image to Oracle Cloud Container Registry
 
 ## Introduction
 
-In this lab, you will build a Docker image with your Helidon application and push that image to a repository inside the Oracle Cloud Container Registry.
+In this lab, you will build a *native* Docker image with your Helidon application and push that image to a repository inside the Oracle Cloud Container Registry.
 
-Estimated Time: 10 minutes
+Estimated Time: 15 minutes
 
 ### Objectives
 
@@ -21,8 +21,6 @@ Estimated Time: 10 minutes
 
 ## Task 1: Build the Helidon Application Docker Image
 
-We'll start by preparing the Docker image that you will use to deploy on Verrazzano.
-
 We are creating a Docker image, which you will upload to the Oracle Cloud Container Registry that belongs to your OCI account. To do so you need to create an image name which reflects your registry coordinates.
 
 You need the following information:
@@ -30,88 +28,129 @@ You need the following information:
 * Region Name
 * Tenancy Namespace
 * Endpoint for the Region
-    >Copy this information to a text editor so that you can refer to it throughout the lab.
-
+    >Copy this information to a text file so that you can refer to it throughout the lab.
 
 1. Locate your *Region Name*. <br>
-Your *Region Name* is located in the top right corner of the Oracle Cloud Console, in this example, it is shown as *US EAST (Ashburn)*. Yours may be different.
+Your *Region Name* is located in the top right corner of the Oracle Cloud Console, in this example, it is shown as *UK South (London)*. Yours may be different.
 
     ![Container Registry](images/region-name.png)
 
 2. Locate the *Tenancy Namespace*. <br>
 In the Console, open the navigation menu and click **Developer Services**. Under **Containers & Artifacts**, click **Container Registry**.
+
     ![Tenancy Namespace](images/container-registry.png)
 
-    > The tenancy namespace is listed in the compartment. Copy and save it in a text editor. You will use this information in the next lab, too.
+    > The tenancy namespace is listed in the compartment. Copy and save it in a text file. You will use this information in the next lab, too.
     ![Tenancy Namespace](images/name-space.png)
 
 3. Locate the *Endpoint for Your Region*. <br>
-Refer to the table documented at this URL [https://docs.oracle.com/en-us/iaas/Content/Registry/Concepts/registryprerequisites.htm#Availab](https://docs.oracle.com/en-us/iaas/Content/Registry/Concepts/registryprerequisites.htm#Availab). In the example shown, the endpoint for the region is *US EAST (Ashburn)* (as the region name) and its endpoint is *iad.ocir.io*. Locate the endpoint for your own *Region Name* and save it in the text editor. You will also need it for the next lab.
+Refer to the table documented at this URL [https://docs.oracle.com/en-us/iaas/Content/Registry/Concepts/registryprerequisites.htm#Availab](https://docs.oracle.com/en-us/iaas/Content/Registry/Concepts/registryprerequisites.htm#Availab). In the example shown, the endpoint for the region is *UK South (London)* (as the region name) and its endpoint is *lhr.ocir.io*. Locate the endpoint for your own *Region Name* and save it in the text file. You will also need it for the next lab.
 
     ![End Points](images/end-points.png)
 
     >Now you have both the tenancy namespace and endpoint for your region.
 
-4. Copy the following command and paste it into your text editor. Then replace the *`ENDPOINT_OF_YOUR_REGION`* with the endpoint of your region name, *`NAMESPACE_OF_YOUR_TENANCY`* with your tenancy's namespace and *`your_first_name`* with your's first name.
+4. Copy the following command and paste it into your text file. Then replace the *`ENDPOINT_OF_YOUR_REGION`* with the endpoint of your region name, *`NAMESPACE_OF_YOUR_TENANCY`* with your tenancy's namespace and *`your_first_name`* with your's first name.
+    > This does a full build inside the Docker container. The first time you run it, it will take a while because it is downloading all of the Maven dependencies and caching them in a Docker layer. Subsequent builds will be much faster as long as you don’t change the pom.xml file. If the pom is modified then the dependencies will be re-downloaded.
 
     ```bash
-    <copy>docker build -t ENDPOINT_OF_YOUR_REGION/NAMESPACE_OF_YOUR_TENANCY/helidon-quickstart-mp-native-your_first_name:1.0 .</copy>
+    <copy>docker build -t ENDPOINT_OF_YOUR_REGION/NAMESPACE_OF_YOUR_TENANCY/myproject-your_first_name:1.0 -f Dockerfile.native .</copy>
     ```
-    When the command is ready then run in the Cloud Shell from the `~/helidon-quickstart-mp-native/` directory. The build will produce the following result:
+    When the command is ready then run in the terminal inside Code Editor from the `~/myproject/` directory. The build will produce the following result at the end:
 
     ```bash
-    $ cd ~/helidon-quickstart-mp-native/
-    $ docker build iad.ocir.io/tenancynamespace/helidon-quickstart-mp-native-your_first_name:1.0 .
-    > docker pull iad.ocir.io/tenancynamespace/helidon-quickstart-mp-native-your_first_name:1.0
-    [+] Building 107.5s (19/19) FINISHED                                                                                                            
-    => [internal] load build definition from Dockerfile                                                                                       0.1s
-    => => transferring dockerfile: 785B                                                                                                       0.1s
-    => [internal] load .dockerignore                                                                                                          0.1s
-    => => transferring context: 48B                                                                                                           0.0s
-    => [internal] load metadata for docker.io/library/openjdk:11-jre-slim                                                                     3.7s
-    => [internal] load metadata for docker.io/library/maven:3.6-jdk-11                                                                        2.8s
-    => [auth] library/openjdk:pull token for registry-1.docker.io                                                                             0.0s
-    => [auth] library/maven:pull token for registry-1.docker.io                                                                               0.0s
-    => [stage-1 1/4] FROM docker.io/library/openjdk:11-jre-slim@sha256:eb6b779c0a429efee5eb4bf45a3bad058ea028ac9434a24ff323b1eb73735527      33.3s
-    => => resolve docker.io/library/openjdk:11-jre-slim@sha256:eb6b779c0a429efee5eb4bf45a3bad058ea028ac9434a24ff323b1eb73735527               0.0s
-    => => sha256:eb6b779c0a429efee5eb4bf45a3bad058ea028ac9434a24ff323b1eb73735527 549B / 549B                                                 0.0s
-    => => sha256:f3cdb8fd164057f4ef3e60674fca986f3cd7b3081d55875c7ce75b7a214fca6d 1.16kB / 1.16kB                                             0.0s
-    => => sha256:9c9e40a31d4fa290f933d76f3b0a4183ba02a7298a309f6bfa892d618e7196ef 7.56kB / 7.56kB                                             0.0s
-    => => sha256:99046ad9247f8a1cbd1048d9099d026191ad9cda63c08aadeb704b7000a51717 31.36MB / 31.36MB                                          18.6s
-    => => sha256:e97c10298fea9915576e7ff72c6eca3d7c589aaafd6bc6481a5814c4271d2251 1.58MB / 1.58MB                                             1.6s
-    => => sha256:1ad67722a7508cc8ca694c9e75efebc7c37f65d179dc2d6f36a9a1615dc5206c 211B / 211B                                                 0.7s
-    => => sha256:cbeb29d69a7c2580a75906597d7cd4d59a9eff12b482810794fa01b105155358 47.13MB / 47.13MB                                          24.4s
-    => => extracting sha256:99046ad9247f8a1cbd1048d9099d026191ad9cda63c08aadeb704b7000a51717                                                  7.7s
-    => => extracting sha256:e97c10298fea9915576e7ff72c6eca3d7c589aaafd6bc6481a5814c4271d2251                                                  0.3s
-    => => extracting sha256:1ad67722a7508cc8ca694c9e75efebc7c37f65d179dc2d6f36a9a1615dc5206c                                                  0.0s
-    => => extracting sha256:cbeb29d69a7c2580a75906597d7cd4d59a9eff12b482810794fa01b105155358                                                  5.7s
-    => [build 1/7] FROM docker.io/library/maven:3.6-jdk-11@sha256:1d29ccf46ef2a5e64f7de3d79a63f9bcffb4dc56be0ae3daed5ca5542b38aa2d            0.0s
-    => [internal] load build context                                                                                                          0.1s
-    => => transferring context: 13.99kB                                                                                                       0.1s
-    => CACHED [build 2/7] WORKDIR /helidon                                                                                                    0.0s
-    => [build 3/7] ADD pom.xml .                                                                                                              0.1s
-    => [build 4/7] RUN mvn package -Dmaven.test.skip -Declipselink.weave.skip                                                                91.7s
-    => [stage-1 2/4] WORKDIR /helidon                                                                                                         0.8s
-    => [build 5/7] ADD src src                                                                                                                0.1s
-    => [build 6/7] RUN mvn package -DskipTests                                                                                               10.8s
-    => [build 7/7] RUN echo "done!"                                                                                                           0.5s
-    => [stage-1 3/4] COPY --from=build /helidon/target/helidon-quickstart-mp-native.jar ./                                                                   0.1s
-    => [stage-1 4/4] COPY --from=build /helidon/target/libs ./libs                                                                            0.1s
-    => exporting to image                                                                                                                     0.1s
-    => => exporting layers                                                                                                                    0.1s
-    => => writing image sha256:587a079ad854fc79e768acda11fc05dd87d37013261249e778e80749798c2837                                               0.0s
-    => => naming to iad.ocir.io/weblogick8s/helidon-quickstart-mp-native-your_first_name:1.0                                                                           0.0s
+    $ docker build -t lhr.ocir.io/tenancynamespace/myproject-your_first_name:1.0 -f Dockerfile.native .
+
+    [INFO] [myproject:70]     (clinit):   2,003.59 ms,  4.84 GB
+    [INFO] [myproject:70]   (typeflow):  46,911.76 ms,  4.84 GB
+    [INFO] [myproject:70]    (objects): 254,111.73 ms,  4.84 GB
+    [INFO] [myproject:70]   (features):  24,428.97 ms,  4.84 GB
+    [INFO] [myproject:70]     analysis: 331,810.15 ms,  4.84 GB
+    [INFO] [myproject:70]     universe:  19,777.47 ms,  4.85 GB
+    [INFO] [myproject:70]      (parse):  17,328.01 ms,  4.85 GB
+    [INFO] [myproject:70]     (inline):  34,953.90 ms,  4.43 GB
+    [INFO] [myproject:70]    (compile): 154,736.98 ms,  4.56 GB
+    [INFO] [myproject:70]      compile: 215,343.56 ms,  4.56 GB
+    [INFO] [myproject:70]        image:  19,270.03 ms,  4.62 GB
+    [INFO] [myproject:70]        write:   2,909.02 ms,  4.62 GB
+    [INFO] [myproject:70]      [total]: 609,016.44 ms,  4.62 GB
+    [INFO] # Printing build artifacts to: /helidon/target/myproject.build_artifacts.txt
+    [INFO] ------------------------------------------------------------------------
+    [INFO] BUILD SUCCESS
+    [INFO] ------------------------------------------------------------------------
+    [INFO] Total time:  10:19 min
+    [INFO] Finished at: 2022-09-02T02:17:13Z
+    [INFO] ------------------------------------------------------------------------
+    Removing intermediate container 7459a8fded63
+    ---> ceae283fafca
+    Step 10/15 : RUN echo "done!"
+    ---> Running in 0d428f253a5b
+    done!
+    Removing intermediate container 0d428f253a5b
+    ---> f1baf6f6e2a7
+    Step 11/15 : FROM scratch
+    ---> 
+    Step 12/15 : WORKDIR /helidon
+    ---> Running in a1e07d0ed3e1
+    Removing intermediate container a1e07d0ed3e1
+    ---> 75c33e343012
+    Step 13/15 : COPY --from=build /helidon/target/myproject .
+    ---> 4bd6a176d7df
+    Step 14/15 : ENTRYPOINT ["./myproject"]
+    ---> Running in e9b47124756f
+    Removing intermediate container e9b47124756f
+    ---> b7c99eff01ed
+    Step 15/15 : EXPOSE 8080
+    ---> Running in 65224e9ac1b5
+    Removing intermediate container 65224e9ac1b5
+    ---> 52dbfa806fdc
+    Successfully built 52dbfa806fdc
+    Successfully tagged lhr.ocir.io/tenancynamespace/myproject-ankit:1.0 
     ```
 
 5. This creates the Docker image, which you can check in your local repository.
 
     ```bash
     $ docker images
-
-    REPOSITORY                                                                           TAG                               IMAGE ID       CREATED         SIZE
-    iad.ocir.io/tenancynamespace/helidon-quickstart-mp-native                                                1.0                               587a079ad854   5 minutes ago   243MB
+    REPOSITORY    TAG    IMAGE ID            CREATED             SIZE
+    lhr.ocir.io/tenancynamespace/myproject-ankit   1.0  6a0213536020  11 hours ago        424MB
     ```
-    Copy to your text editor the replaced full image name `ENDPOINT_OF_YOUR_REGION/NAMESPACE_OF_YOUR_TENANCY/helidon-quickstart-mp-native:1.0` because you will need it later.
+    Copy to your text editor the replaced full image name `ENDPOINT_OF_YOUR_REGION/NAMESPACE_OF_YOUR_TENANCY/myproject-your_first_name:1.0` because you will need it later.
+
+6. Copy and paste the following command in terminal, to run the docker image in Cloud Shell of Code Editor.
+    ```bash
+    <copy>docker run --rm -p 8080:8080 ENDPOINT_OF_YOUR_REGION/NAMESPACE_OF_YOUR_TENANCY/myproject-your_first_name:1.0</copy>
+    ```
+    ![docker run](images/docker-run.png)
+
+7.  Open a new terminal/console and run the following commands to check the application:
+
+    ```bash
+    <copy>
+    curl -X GET http://localhost:8080/greet
+    </copy>
+    {"message":"Hello World!","greeting":null}
+    ```
+
+    ```bash
+    <copy>
+    curl -X GET http://localhost:8080/greet/Joe
+    </copy>
+    {"message":"Hello Joe!","greeting":null}
+    ```
+
+    ```bash
+    <copy>
+    curl -X PUT -H "Content-Type: application/json" -d '{"greeting" : "Hola"}' http://localhost:8080/greet/greeting
+    </copy>
+    ```
+
+    ```bash
+    <copy>
+    curl -X GET http://localhost:8080/greet/Jose
+    </copy>
+    {"message":"Hola Jose!","greeting":null}
+    ```
 
 ## Task 2: Generate an Authentication Token to log in to the Oracle Cloud Container Registry
 
@@ -133,22 +172,22 @@ In this step, we are going to generate an *Authentication Token*, that we will u
 
     ![Generate Token](images/generate-token.png)
 
-5. Copy *helidon-quickstart-mp-native* and paste it in the *Description* box and click **Generate Token**.
+5. Copy *myproject* and paste it in the *Description* box and click **Generate Token**.
 
     ![Token create](images/create-token.png)
 
-6. Click **Copy** under Generated Token and paste it into the text editor. You cannot copy it later, so make sure you have a copy of this token saved.
+6. Click **Copy** under Generated Token and paste it into the text file. You cannot copy it later, so make sure you have a copy of this token saved.
 
     ![Generated Token](images/copy-token.png)
 
-## Task 3: Push the Helidon Application (helidon-quickstart-mp-native) Docker Image to your Container Registry Repository
+## Task 3: Push the Helidon Application (myproject) Docker Image to your Container Registry Repository
 
-In Task 1 of this lab, you opened a URL [https://docs.oracle.com/en-us/iaas/Content/Registry/Concepts/registryprerequisites.htm#Availab](https://docs.oracle.com/en-us/iaas/Content/Registry/Concepts/registryprerequisites.htm#Availab) and determined the endpoint for your Region name and copied it to a text editor. In our example, the Region Name is US East (Ashburn). You will need this information for this task.
-    ![Endpoint](images/end-point.png)
+In Task 1 of this lab, you opened a URL [https://docs.oracle.com/en-us/iaas/Content/Registry/Concepts/registryprerequisites.htm#Availab](https://docs.oracle.com/en-us/iaas/Content/Registry/Concepts/registryprerequisites.htm#Availab) and determined the endpoint for your Region name and copied it to a text file. In our example, the Region Name is UK South (London). You will need this information for this task.
+    ![Endpoint](images/end-points.png)
 
-1. Copy the following command and paste it into your text editor and then replace the `ENDPOINT_OF_REGION_NAME` with the endpoint of your region.
+1. Copy the following command and paste it into your text file and then replace the `ENDPOINT_OF_REGION_NAME` with the endpoint of your region.
 
-    >In our example the Region Name is *US East (Ashburn)* and the endpoint is *iad.ocir.io*. You will need your specific information for this task.
+    >In our example the Region Name is *UK South (London)* and the endpoint is *lhr.ocir.io*. You will need your specific information for this task.
 
     ```bash
     <copy>docker login ENDPOINT_OF_REGION_NAME</copy>
@@ -157,38 +196,38 @@ In Task 1 of this lab, you opened a URL [https://docs.oracle.com/en-us/iaas/Cont
 2. In the previous step, you also determined the tenancy namespace.
 Enter the Username as follows: `NAMESPACE_OF_YOUR_TENANCY`/`YOUR_ORACLE_CLOUD_USERNAME`. <br>
     * Replace `NAMESPACE_OF_YOUR_TENANCY` with your tenancy's namespace
-    * Replace `YOUR_ORACLE_CLOUD_USERNAME` with your Oracle Cloud Account user name and then copy the replaced username from your text editor and paste it into the *Cloud Shell*.
-    * For Password, copy and paste the Authentication Token from your text editor (or wherever you saved it.)
+    * Replace `YOUR_ORACLE_CLOUD_USERNAME` with your Oracle Cloud Account user name and then copy the replaced username from your text file and paste it into the *Cloud Shell*.
+    * For Password, copy and paste the Authentication Token from your text file (or wherever you saved it.)
 
     ```bash
-    $ docker login iad.ocir.io
+    $ docker login lhr.ocir.io
     Username: NAMESPACE_OF_YOUR_TENANCY/YOUR_ORACLE_CLOUD_USERNAME
     Password:
     Login Succeeded
     ```
 3. Navigate back to the Container Registry. In the Console, open the navigation menu and click **Developer Services**. Under **Containers & Artifacts**, click **Container Registry**.
-    ![Container Registry](images/container-registry2.png)
+    ![Container Registry](images/container-registry.png)
 
 4. Select the compartment and then click **Create Repository**.
     ![Repository Create](images/repository-create.png)
 
-5. Select the compartment and enter *`helidon-quickstart-mp-native-your_first_name`* as the Repository Name, then choose Access as **Public** and click **Create Repository**.
+5. Select the compartment and enter *`myproject-your_first_name`* as the Repository Name, then choose Access as **Public** and click **Create Repository**.
 
     ![Repository Description](images/describe-repository.png)
 
-6. After the repository *`helidon-quickstart-mp-native-your_first_name`* has been created you can verify in the repository list and its settings.
+6. After the repository *`myproject-your_first_name`* has been created you can verify in the repository list and its settings.
 
     ![Verify Namespace](images/verify-namespace.png)
 
-7. To push your Docker image into your repository inside the Oracle Cloud Container Registry, copy and paste the following command in your text editor and then replace `ENDPOINT_OF_YOUR_REGION_NAME`/`NAMESPACE_OF_YOUR_TENANCY`/quickstar-mp-your_first_name:1.0 with Docker image full name, which you saved earlier.
+7. To push your Docker image into your repository inside the Oracle Cloud Container Registry, copy and paste the following command in your text file and then replace `ENDPOINT_OF_YOUR_REGION_NAME`/`NAMESPACE_OF_YOUR_TENANCY`/myproject-your_first_name:1.0 with Docker image full name, which you saved earlier.
 
     ```bash
-    <copy>docker push ENDPOINT_OF_YOUR_REGION_NAME/NAMESPACE_OF_YOUR_TENANCY/helidon-quickstart-mp-native-your_first_name:1.0</copy>
+    <copy>docker push ENDPOINT_OF_YOUR_REGION_NAME/NAMESPACE_OF_YOUR_TENANCY/myproject-your_first_name:1.0</copy>
     ```
     The result should look like this:
     ```bash
-    $ docker push iad.ocir.io/tenancynamespace/helidon-quickstart-mp-native-your_first_name:1.0
-    The push refers to a repository [iad.ocir.io/tenancynamespace/helidon-quickstart-mp-native-your_first_name]
+    $ docker push lhr.ocir.io/tenancynamespace/myproject-your_first_name:1.0
+    The push refers to a repository [lhr.ocir.io/tenancynamespace/myproject-your_first_name]
     0795b8384c47: Pushed
     131452972f9d: Pushed
     93c53f2e9519: Pushed
@@ -199,11 +238,10 @@ Enter the Username as follows: `NAMESPACE_OF_YOUR_TENANCY`/`YOUR_ORACLE_CLOUD_US
     1.0: digest: sha256:355fa56eab185535a58c5038186381b6d02fd8e0bcb534872107fc249f98256a size: 1786
     ```
 
-8. After the *docker push* command runs successfully, expand the *`helidon-quickstart-mp-native-your_first_name`* repository and you will notice a new image has been uploaded to this repository.
+8. After the *docker push* command runs successfully, expand the *`myproject-your_first_name`* repository and you will notice a new image has been uploaded to this repository.
 
     ![Image uploaded](images/verify-push.png)
 
-9. Leave the *Cloud Shell* and Container Registry repository page open; you will need them for the next labs.
 
 ## Acknowledgements
 

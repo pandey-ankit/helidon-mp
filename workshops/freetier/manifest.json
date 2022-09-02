@@ -29,7 +29,7 @@
         },
         {
             "title": "Lab 5: Run the  Helidon Application Image on Compute Instance",
-            "filename": "../../deploy-app-on-verrazzano/deploy-app-on-verrazzano.md"
+            "filename": "../../create-compute-instance/create-compute-instance.md"
         },
         {
           "title": "Need Help?",
