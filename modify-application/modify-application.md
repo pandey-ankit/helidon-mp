@@ -11,7 +11,7 @@ Estimated Time: 10 minutes
 
 In this lab, you will:
 
-* Add a custom endpoint in Java class
+* Add a custom endpoint in the Java class
 * Build and run the modified application
 
 ### Prerequisites
@@ -20,13 +20,13 @@ In this lab, you will:
 
 ## Task 1: Add a custom Endpoint
 
-1. In Code Editor, click *GreetResource.java* file to open it.
+1. In Code Editor, click the *GreetResource.java* file to open it.
     ![open file](images/open-file.png)
 
 
-2. As you may see in the code, it is fully MicroProfile based. This means that all the functionality is achieved with POJOs and annotations.  These annotations are Standard, thus portable across different vendors. This means that you can easily run code running on other platforms supporting the same version of MicroProfile. More information you will find it [here](https://microprofile.io/).
+2. As you may see in the code, it is fully MicroProfile-based. This means that all the functionality is achieved with POJOs and annotations.  These annotations are Standard, thus portable across different vendors. This means that you can easily run code running on other platforms supporting the same version of MicroProfile. For more information, you will find it [here](https://microprofile.io/).
 
-3. Create a new endpoint that provides title randomely out of a group of five titles. To create this endpoint, copy and paste the below code at line number 80 as shown below.
+3. Create a new endpoint that provides titles randomly out of a group of five titles. To create this endpoint, copy and paste the below code at line number 80 as shown below.
     ```bash
     <copy>@Path("/title")
     @GET
@@ -37,13 +37,13 @@ In this lab, you will:
     ```
     ![add code](images/add-code.png)
 
-4. To save the content of file, in Code Editor, click *File* -> *Save*.
-    > Auto Save is enable by default in Code Editor.
+4. To save the content of the file, in Code Editor, click *File* -> *Save*.
+    > AutoSave is enabled by default in Code Editor.
 
 
 ## Task 2: Run the application
 
-1. Copy and paste the following command in terminal to run the application.
+1. Copy and paste the following command into the terminal to run the application.
     ```bash
     <copy>mvn clean package
     java -jar target/myproject.jar</copy>
@@ -55,7 +55,7 @@ In this lab, you will:
     <copy>curl -X GET http://localhost:8080/greet/title</copy>
     Mr.
     ```
-    > It randonly provide the title out of 5 option, you can run this command multiple time.
+    > It randomly provides the title out of 5 options, you can run this command multiple times.
 
 3. Stop the *myproject* application by entering `Ctrl + C` in the terminal where the "java -jar target/myproject.jar" command is running.
 

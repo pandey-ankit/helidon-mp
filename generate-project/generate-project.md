@@ -14,7 +14,7 @@ With support for health checks, metrics, tracing and fault tolerance, Helidon ha
 
 ### About Helidon Project Starter
 
-Project Starter is a new web UI for creating Helidon projects. It’s highly customizable, providing various options that allow users to select Helidon features they want to add to the project. End users will be able to generate projects to their specific needs. For more informaton click [Helidon Starter](https://helidon.io/starter).
+Project Starter is a new web UI for creating Helidon projects. It’s highly customizable, providing various options that allow users to select Helidon features they want to add to the project. End users will be able to generate projects to their specific needs. For more information click [Helidon Starter](https://helidon.io/starter).
 
 
 ### About Code Editor
@@ -25,7 +25,7 @@ Code Editor's direct integration with Cloud Shell allows you access to the Graal
 
 ### About OCI Cloud Shell
 
-[OCI Cloud Shell](https://docs.oracle.com/en-us/iaas/Content/API/Concepts/cloudshellintro.htm) is a browser-based terminal accessible from the Oracle Cloud Console. It provides access to a Linux shell with a pre-authenticated OCI command-line interface (CLI), pre-installed developer tools, and comes with 5GB of storage.
+[OCI Cloud Shell](https://docs.oracle.com/en-us/iaas/Content/API/Concepts/cloudshellintro.htm) is a browser-based terminal accessible from the Oracle Cloud Console. It provides access to a Linux shell with a pre-authenticated OCI command-line interface (CLI), and pre-installed developer tools, and comes with 5GB of storage.
 
 As of version 22.2.0, GraalVM Enterprise JDK 17 and Native Image are pre-installed in Cloud Shell.
 
@@ -35,9 +35,9 @@ As of version 22.2.0, GraalVM Enterprise JDK 17 and Native Image are pre-install
 ### Objectives
 * Create a MicroProfile supported microservice called Helidon Greeting application
 * Open Helidon application in Code Editor
-* Change the default JDK in cloud shell
+* Change the default JDK in the cloud shell
 * Configure the required Maven
-* Run and excercise the Helidon Greeting app
+* Run and exercise the Helidon Greeting app
 
 
 ### Prerequisites
@@ -47,7 +47,7 @@ As of version 22.2.0, GraalVM Enterprise JDK 17 and Native Image are pre-install
 
 ## Task 1: Generate Helidon project using project starter
 
-1. Copy the belor URL and paste it in the browser to open the Helidon Project page.
+1. Copy the below URL and paste it into the browser to open the Helidon Project page.
 
     ```bash
     <copy>https://helidon.io/starter/</copy>
@@ -58,19 +58,19 @@ As of version 22.2.0, GraalVM Enterprise JDK 17 and Native Image are pre-install
 
 4. For Media Support, select *Jackson* and then click *Next*.
 
-5. For Customize Project, select the default values and click on *Downloads*. This will pop-up a window, save this *myproject.zip* to location of your choice. In the rest of this workshop, myproject name will be used. if you choose a different name, please change respectively.
+5. For Customize Project, select the default values and click on *Downloads*. This will pop up in a window, save this *myproject.zip* to the location of your choice. In the rest of this workshop, myproject name will be used. if you choose a different name, please change respectively.
 
-    > You can choose any values for this section, but for simplicity and using a pre-downloaded myproject.zip file which consist of default values for this workshop, we recommend to use default values.
+    > You can choose any values for this section, but for simplicity and using a pre-downloaded myproject.zip file which consists of default values for this workshop, we recommend using default values.
 
 ## Task 2: Build and run the helidon project locally
 
-1. In Cloud Console, click *Code Editor* icon as shown.
+1. In Cloud Console, click the *Code Editor* icon as shown.
     ![code editor](images/code-editor.png)
 
 2. In Code Editor, click *Terminal* -> *New Terminal*.
     ![open terminal](images/open-terminal.png)
 
-3. Copy and paste the below command in terminal, which downloads the default myproject.zip file to code editor.
+3. Copy and paste the below command in the terminal, which downloads the default myproject.zip file to the Code Editor.
 
     ```bash
     <copy>curl -LSs https://github.com/pandey-ankit/examples/blob/main/myproject.zip?raw=true >~/myproject.zip
@@ -84,23 +84,23 @@ As of version 22.2.0, GraalVM Enterprise JDK 17 and Native Image are pre-install
 4. In Code Editor, click *File* -> *Open*.
     ![open project](images/open-project.png)
 
-5. Select *myproject* folder and click *Open*. You can view the project structure in Code Editor.
+5. Select the *myproject* folder and click *Open*. You can view the project structure in Code Editor.
     ![select folder](images/select-folder.png)
     ![view project](images/view-project.png)
 
-6. To run this project we will use Maven 3.8+ and JDK 17+. In Oracle cloud, you have various JDK provided. Here we will select GraalVM JDK. Copy and paste the following command in terminal, to know your default JDK.
+6. To run this project we will use Maven 3.8+ and JDK 17+. In Oracle cloud, you have various JDK provided. Here we will select GraalVM JDK. Copy and paste the following command in the terminal, to know your default JDK.
 
     ```bash
     <copy>csruntimectl java list</copy>
     ```
     ![list JDK](images/list-jdk.png)
 
-    > The JDK with * *asterisk* in the begining is your default JDK. If you have any other JDK then graalvmeejdk, then change the default jdk version by running the below command.
+    > The JDK with * *asterisk* in the beginning is your default JDK. If you have any other JDK then graalvmeejdk, then change the default JDK version by running the below command.
 
     ```bash
     <copy>csruntimectl java set graalvmeejdk-17.0.4</copy>
     ```
-7. To configure the required maven, copy and paste the following command in terminal.
+7. To configure the required maven, copy and paste the following command in the terminal.
     ```bash
     <copy>wget https://dlcdn.apache.org/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz
     tar -xzvf apache-maven-3.8.6-bin.tar.gz
@@ -109,26 +109,26 @@ As of version 22.2.0, GraalVM Enterprise JDK 17 and Native Image are pre-install
     ```
     ![configure maven](images/configure-maven.png)
 
-8. To verify that you have the correct version of JDK and Maven as shown below, run the following command in terminal.
+8. To verify that you have the correct version of JDK and Maven as shown below, run the following command in the terminal.
     ```bash
     <copy>mvn -v</copy>
     ```
     ![verify pre-requisite](images/verify-prerequisite.png)
 
-9. From myproject folder, run the following command to build the project.
+9. From the myproject folder, run the following command to build the project.
     ```bash
     <copy>mvn clean package</copy>
     ```
     ![build project](images/build-project.png)
-    > You should see *BUILD SUCCESS* at the end of execution of this command.
+    > You should see *BUILD SUCCESS* at the end of the execution of this command.
 
-10. Copy and paste the following command in terminal, to run this application. You will see the output similar to shown in below screenshot.
+10. Copy and paste the following command into the terminal, to run this application. You will see the output similar to that shown in the below screenshot.
     ```bash
     <copy>java -jar target/myproject.jar</copy>
     ```
     ![run project](images/run-project.png)
 
-> Notedown the start time, it is 5140 miliseconds. we will compare this time with native image executable later.
+> Note down the start time, it is 5140 milliseconds. we will compare this time with the native image executable later.
 
 11. Open a new terminal/console and run the following commands to check the application:
 

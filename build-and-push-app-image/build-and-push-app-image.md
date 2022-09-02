@@ -117,7 +117,7 @@ Refer to the table documented at this URL [https://docs.oracle.com/en-us/iaas/Co
     ```
     Copy to your text editor the replaced full image name `ENDPOINT_OF_YOUR_REGION/NAMESPACE_OF_YOUR_TENANCY/myproject-your_first_name:1.0` because you will need it later.
 
-6. Copy and paste the following command in terminal, to run the docker image in Cloud Shell of Code Editor.
+6. Copy and paste the following command in the terminal, to run the docker image in Cloud Shell of Code Editor.
     ```bash
     <copy>docker run --rm -p 8080:8080 ENDPOINT_OF_YOUR_REGION/NAMESPACE_OF_YOUR_TENANCY/myproject-your_first_name:1.0</copy>
     ```

@@ -10,7 +10,7 @@ Estimated Time: 15 minutes
 
 GraalVM is a high-performance JDK distribution that can accelerate any Java workload running on the HotSpot JVM.
 
-GraalVM Native Image ahead-of-time compilation enables you to build lightweight Java applications that are smaller, faster, and use less memory and CPU. At build time, GraalVM Native Image analyzes a Java application and its dependencies to identify just what classes, methods, and fields are absolutely necessary and generates optimized machine code for just those elements.
+GraalVM Native Image ahead-of-time compilation enables you to build lightweight Java applications that are smaller, faster, and use less memory and CPU. At build time, GraalVM Native Image analyzes a Java application and its dependencies to identify just what classes, methods, and fields are necessary and generates optimized machine code for just those elements.
 
 GraalVM Enterprise Edition is available for use on Oracle Cloud Infrastructure (OCI) at no additional cost.
 
@@ -26,7 +26,7 @@ GraalVM Enterprise Edition is available for use on Oracle Cloud Infrastructure (
 
 ## Task 1: Create the Helidon MP application GraalVM native image
 
-1. To create a GraalVM Native image with the same application, run the following command in terminal, where you configured the maven and jdk.
+1. To create a GraalVM Native image with the same application, run the following command in the terminal, where you configured the maven and JDK.
     ```bash
     <copy>export USE_NATIVE_IMAGE_JAVA_PLATFORM_MODULE_SYSTEM=false
     mvn clean package -Pnative-image</copy>
@@ -92,7 +92,7 @@ GraalVM Enterprise Edition is available for use on Oracle Cloud Infrastructure (
     <copy>./target/myproject</copy>
     ```
     ![run native-image](images/run-native.png)
-    > You can see the application startup time is 145 miliseconds, which is almost 35 times faster.
+    > You can see the application startup time is 145 milliseconds, which is almost 35 times faster.
 
 
 2. Stop the *myproject* application by entering `Ctrl + C` in the terminal where the "./target/myproject" command is running.
