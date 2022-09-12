@@ -60,7 +60,6 @@ As of version 22.2.0, GraalVM Enterprise JDK 17 and Native Image are pre-install
 
 5. For Customize Project, select the default values and click on *Downloads*. This will pop up in a window, save this *myproject.zip* to the location of your choice. In the rest of this workshop, myproject name will be used. if you choose a different name, please change respectively.
 
-    > You can choose any values for this section, but for simplicity and using a pre-downloaded myproject.zip file which consists of default values for this workshop, we recommend using default values.
 
 ## Task 2: Build and run the helidon project locally
 
