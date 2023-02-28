@@ -6,6 +6,9 @@ This lab walks you through the steps to create a Helidon MP application.
 
 Estimated Time: 15 minutes
 
+Watch the video below for a quick walk-through of the lab.
+[Generate an Helidon MP Project and Run the project in Code Editor](videohub:1_22nv8v4q)
+
 ### About Product/Technology
 
 Helidon is designed to be simple to use, with tooling and examples to get you going quickly. Since Helidon is just a collection of libraries running on a fast Netty core, there is no extra overhead or bloat. Helidon supports MicroProfile and provides familiar APIs like JAX-RS, CDI and JSON-P/B. Our MicroProfile implementation runs on our fast Helidon Reactive WebServer. The Reactive WebServer provides a modern, functional, programming model and runs on top of Netty. Lightweight, flexible and reactive, the Helidon WebServer provides a simple to use and fast foundation for your microservices.
@@ -100,17 +103,16 @@ As of version 22.2.0, GraalVM Enterprise JDK 17 and Native Image are pre-install
     ```
     ![list JDK](images/list-jdk.png)
 
-    > The JDK with * *asterisk* in the beginning is your default JDK. If you have any other JDK then graalvmeejdk, then change the default JDK version by running the below command.
+    > The JDK with * *asterisk* in the beginning is your default JDK. If you have any other JDK then graalvmeejdk, then change the default JDK version by running the below command. Please use the shown version of graalvmeejdk, as it may different then what is shown in command.
 
     ```bash
-    <copy>csruntimectl java set graalvmeejdk-17.0.4</copy>
+    <copy>csruntimectl java set graalvmeejdk-17.0.4.1</copy>
     ```
 9. To configure the required maven, copy and paste the following command in the terminal.
     ```bash
     <copy>wget https://dlcdn.apache.org/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz
     tar -xzvf apache-maven-3.8.6-bin.tar.gz
-    PATH=~/myproject/apache-maven-3.8.6/bin:$PATH
-    cd ~</copy>
+    PATH=~/helidon-project/myproject/apache-maven-3.8.6/bin:$PATH</copy>
     ```
     ![configure maven](images/configure-maven.png)
 
@@ -120,12 +122,12 @@ As of version 22.2.0, GraalVM Enterprise JDK 17 and Native Image are pre-install
     ```
     ![verify pre-requisite](images/verify-prerequisite.png)
 
-11. From the myproject folder, run the following command to build the project.
+11. From the *myproject* folder, run the following command to build the project.
     ```bash
     <copy>mvn clean package</copy>
     ```
     ![build project](images/build-project.png)
-    > You should see *BUILD SUCCESS* at the end of the execution of this command.
+    > Make sure, you are running this command from *~/helidon-project/myproject* folder.You should see *BUILD SUCCESS* at the end of the execution of this command.
 
 12. Copy and paste the following command into the terminal, to run this application. You will see the output similar to that shown in the below screenshot.
     ```bash
@@ -164,7 +166,10 @@ As of version 22.2.0, GraalVM Enterprise JDK 17 and Native Image are pre-install
     {"message":"Hola Jose!","greeting":null}
     ```
 
-14. Stop the *myproject* application by entering `Ctrl + C` in the terminal where the "java -jar target/myproject.jar" command is running.
+14. *Stop the **myproject** application by entering `Ctrl + C` in the terminal where the "java -jar target/myproject.jar" command is running*.
+IT IS VERY IMPORTANT, OTHERWISE YOU WILL FACE ISSUES IN THE LAB LATER.
+
+
 
 
 

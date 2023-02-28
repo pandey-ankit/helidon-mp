@@ -6,6 +6,9 @@ In this lab, you will learn how to build a GraalVM native image for a Helidon MP
 
 Estimated Time: 15 minutes
 
+Watch the video below for a quick walk-through of the lab.
+[Build Helidon MP Application native image](videohub:1_0hftfgfy)
+
 ### About GraalVM native image
 
 GraalVM is a high-performance JDK distribution that can accelerate any Java workload running on the HotSpot JVM.
@@ -95,7 +98,7 @@ GraalVM Enterprise Edition is available for use on Oracle Cloud Infrastructure (
     > You can see the application startup time is 145 milliseconds, which is almost 35 times faster.
 
 
-2. Stop the *myproject* application by entering `Ctrl + C` in the terminal where the "./target/myproject" command is running.
+2. *Stop the **myproject** application by entering `Ctrl + C` in the terminal where the "./target/myproject" command is running*. IT IS VERY IMPORTANT, OTHERWISE YOU WILL FACE ISSUES IN THE LAB LATER.
 
 
 
